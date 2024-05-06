@@ -4,6 +4,7 @@ import org.example.ecom.Model.Instructor;
 import org.example.ecom.Model.User;
 
 import org.example.ecom.dtos.createUserDtos;
+import org.example.ecom.dtos.getInstructorDtos;
 import org.example.ecom.services.UserServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,7 @@ public class Usercontroller {
         return userServices.getUserByName(name);
     }
     @GetMapping("/{instructor}/{name}")
-    public List<Instructor> getInstructorByName(@PathVariable(name="name") String name){
+    public List<getInstructorDtos> getInstructorByName(@PathVariable(name="name") String name){
         return userServices.getInstructorByName(name);
     }
     @PostMapping("/instructor")

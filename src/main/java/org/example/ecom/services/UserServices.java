@@ -1,11 +1,14 @@
 package org.example.ecom.services;
 
+import org.example.ecom.Model.Batch;
 import org.example.ecom.Model.Instructor;
 import org.example.ecom.Model.User;
 import org.example.ecom.Repository.InstructorRepository;
 import org.example.ecom.Repository.UserRepository;
+import org.example.ecom.dtos.getInstructorDtos;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,7 +43,26 @@ public class UserServices {
     public List<User> getUserByName(String name){
         return userRepository.findByName(name);
     }
-    public List<Instructor> getInstructorByName(String name){
-        return instructorRepository.findByName(name);
+
+
+    public List<getInstructorDtos> getInstructorByName(String name){
+        List<Instructor> instructors = instructorRepository.findByName(name);
+        List<getInstructorDtos> instructorDtos = new ArrayList<>();
+        for(Instructor instructor : instructors){
+            getInstructorDtos GetinstructorDto = new getInstructorDtos();
+            GetinstructorDto.setId(instructor.getId());
+            GetinstructorDto.setName(instructor.getName());
+            GetinstructorDto.setEmail(instructor.getEmail());
+            List<String> batchNames = new ArrayList<>();
+            List<Long> ids = new ArrayList<>();
+            for(Batch batch: instructor.getBatch()){
+                batchNames.add(batch.getName());
+                ids.add(batch.getId());
+            }
+            GetinstructorDto.setBatchName(batchNames);
+            GetinstructorDto.setBatchId(ids);
+            instructorDtos.add(GetinstructorDto);
+        }
+        return instructorDtos;
     }
 }
